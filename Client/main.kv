@@ -1,0 +1,316 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+<MDLabel>:
+	color: (1,1,1,1)
+
+
+<LoginPage>:
+	screen_manager: screen_manager
+	screen1: screen1
+	screen2: screen2
+	screen3: screen3
+	
+	MDBottomNavigation:
+
+        MDBottomNavigationItem:
+        	name: 'login'
+            icon: 'account'
+            text: 'login'
+			GridLayout:
+				cols: 1
+				AnchorLayout:
+					anchor_x: 'center'
+					anchor_y: 'center'
+					MDLabel:
+						text: 'Login'
+						font_style:'H2'
+						halign: 'center'
+						valign: 'bottom'
+				AnchorLayout:
+					anchor_x: 'center'
+					anchor_y: 'bottom'
+					MDTextField:
+						id: username
+						hint_text: 'Username'
+						size_hint:(.5,None)
+				AnchorLayout:
+					anchor_x: 'center'
+					anchor_y: 'bottom'
+					MDTextField:
+						id: password
+						hint_text: 'Password'
+						size_hint:(.5,None)
+						password: True
+
+				AnchorLayout:
+					anchor_x: 'center'
+					anchor_y: 'bottom'
+					MDLabel:
+						text: 'Remember Me'
+						halign: 'center'
+					MDSwitch:
+						on_active: root.remember = True
+						halign: 'left'
+				AnchorLayout:
+					anchor_x: 'center'
+					anchor_y: 'center'
+					MDRoundFlatButton:
+						text: "Login"
+						on_press: root.login_btn(username.text,password.text)
+		
+
+
+		MDBottomNavigationItem:
+			name: 'create-account'
+			icon: 'account-plus'
+			text: 'Create account'
+
+			ScreenManager:
+				id: screen_manager
+				Screen:
+					id: screen1
+					name: 'page1'
+					manager: screen_manager
+					GridLayout:
+						cols: 1
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDLabel:
+								text: 'Create account'
+								font_style:'H2'
+								halign: 'center'
+								valign: 'bottom'
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDTextField:
+								id: new_username
+								hint_text: 'Please choose a username'
+								size_hint:(.5,None)
+								required: True
+								max_text_length: 16
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'top'
+							MDTextField:
+								id: email
+								hint_text: 'Please enter your email address'
+								size_hint:(.5,None)
+								required: True
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'top'
+							MDRoundFlatButton:
+								text: 'Next'
+								on_release: root.validate_page1(new_username.text,email.text)
+
+				
+				Screen:
+					id: screen2
+					name: 'page2'
+					GridLayout:
+						cols: 1
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDLabel:
+								text: 'Create account'
+								font_style:'H2'
+								halign: 'center'
+								valign: 'bottom'
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDTextField:
+								id: fname
+								hint_text: 'Please enter your prefered first name'
+								size_hint:(.5,None)
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'top'
+							MDTextField:
+								id: lname
+								hint_text: 'Please enter your prefered last name'
+								size_hint:(.5,None)
+						GridLayout:
+							cols: 2
+							AnchorLayout:
+								anchor_x: 'center'
+								anchor_y: 'top'
+								MDRoundFlatButton:
+									text: 'Back'
+									on_release: screen_manager.switch_to(screen1,transition=SlideTransition(direction='right'))
+							AnchorLayout:
+								anchor_x: 'center'
+								anchor_y: 'top'
+								MDRoundFlatButton:
+									text: 'Next'
+									on_release: root.validate_page2(fname.text,lname.text)
+
+
+
+				Screen:
+					id: screen3
+					name: 'page3'
+					GridLayout:
+						cols: 1
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDLabel:
+								text: 'Create account'
+								font_style:'H2'
+								halign: 'center'
+								valign: 'bottom'
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'center'
+							MDTextField:
+								id: new_password1
+								hint_text: 'Please choose a password'
+								size_hint:(.5,None)
+								password: True
+						AnchorLayout:
+							anchor_x: 'center'
+							anchor_y: 'top'
+							MDTextField:
+								id: new_password2
+								hint_text: 'Please confirm password'
+								size_hint:(.5,None)
+								password: True
+						GridLayout:
+							cols: 2
+							AnchorLayout:
+								anchor_x: 'center'
+								anchor_y: 'top'
+								MDRoundFlatButton:
+									text: 'Back'
+									on_release: screen_manager.switch_to(screen2,transition=SlideTransition(direction='right'))
+							AnchorLayout:
+								anchor_x: 'center'
+								anchor_y: 'top'
+								MDRoundFlatButton:
+									text: 'Finish'
+									on_release: root.create_btn(new_username.text,new_password1.text,new_password2.text,fname.text,lname.text,email.text)
+
+
+
+<MainPage>:
+	header: contact
+	message: message
+	ScreenManager:
+		id: screen_manager
+		Screen:
+			id: main
+			name: 'main'
+			manager: screen_manager
+			on_pre_enter: root.on_main_opened()
+			BoxLayout:
+				orientation: 'vertical'
+		    	MDToolbar:
+					id: main_header
+					title: 'Contacts'
+					font_color: (0,0,0,1)					
+					right_action_items: [["account-box", lambda x: root.switch_screen('requests')],["account-plus", lambda x: root.switch_screen('add')]]
+			    MDBottomNavigation:
+			        MDBottomNavigationItem:
+			            name: "contacts"
+			            icon: 'contacts'
+			            text: 'Contacts'
+			            on_pre_enter:
+			            	main_header.title = 'Contacts'
+					    ScrollView:
+					    	MDList:
+					    		id: contact_list
+
+
+			        MDBottomNavigationItem:
+			            name: "setting"
+			            icon: 'settings'
+			            text: 'Settings'
+			            on_pre_enter:
+			            	main_header.title = 'Settings'
+					    ScrollView:
+					    	MDList:
+					    		OneLineListItem:
+					    			text: 'Clear messages'
+					    			on_press: root.clear_messages()
+					    		OneLineListItem:
+					    			text: 'Log out'
+					    			on_press: root.logout()
+        Screen:
+            name: "requests"
+            manager: screen_manager
+            BoxLayout:
+            	orientation: 'vertical'
+            	MDToolbar:
+            		title: 'Requests'
+            		left_action_items: [["keyboard-backspace", lambda x: root.switch_screen('main','right')]]
+			    ScrollView:
+			    	size_hint: (1,0.7)
+			    	pos_hint: {'top': 0.7}
+			    	MDList:
+			    		id: request_list
+
+		Screen:
+            name: "add"
+            manager: screen_manager
+            FloatLayout:
+	            MDToolbar:
+	            	title: 'Add contact'
+	            	left_action_items: [["keyboard-backspace", lambda x: root.switch_screen('main','right')]]
+	            	pos_hint: {'top': 1}
+				AnchorLayout:
+					pos_hint: {'top': 0.6}
+					anchor_x: 'center'
+					anchor_y: 'top'
+					MDTextField:
+						id: username
+						hint_text: 'Username'
+						size_hint:(.5,None)
+				AnchorLayout:
+					pos_hint: {'top': 0.4}
+					anchor_x: 'center'
+					anchor_y: 'top'
+					MDRoundFlatButton:
+						text: "Add"
+						on_press: root.add_contact()
+				
+		Screen:
+			name: 'chat'
+			manager: screen_manager
+			on_pre_enter: root.on_chat_opened()
+			BoxLayout:
+				orientation: "vertical"
+				MDToolbar:
+					id: contact
+					title: ''
+					font_color: (0,0,0,1)
+					left_action_items: [["keyboard-backspace", lambda x: root.back()]]
+				FloatLayout:
+					ScrollView:
+						id: scroll
+						size_hint: (1,0.8)
+						pos_hint: {'right': 1,'top': 1}
+						halign: 'right'
+						MDList:
+							id: message_board
+							padding: '12dp'
+					AnchorLayout:
+						pos_hint: {'right':1.02,'top': 0.6}
+						anchor_x: 'left'
+						anchor_y: 'center'
+						MDTextField:
+							id: message
+							hint_text: 'Message'
+							size_hint:(.8,None)
+							mode: 'rectangle'
+							multiline: True
+					AnchorLayout:
+						pos_hint: {'right':0.97,'top': 0.6}
+						anchor_x: 'right'
+						anchor_y: 'center'
+						MDRoundFlatButton:
+							text: "Send"
+							on_press: root.send_message()

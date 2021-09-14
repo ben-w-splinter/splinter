@@ -1,0 +1,10 @@
+1: Friend request
+    1: Failed - user does not exist
+    2: Failed - users are already friends
+    3: Success
+2: Accept friend request
+3: Get messages
+4: Get contacts
+5: Logout
+
+Error code 404 = Invalid request sent
