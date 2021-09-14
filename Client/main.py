@@ -19,7 +19,7 @@ import chat_client
 
 from kivymd.app import MDApp
 
-server_ip = '127.1.1.1'
+server_ip = '127.0.0.1'
 server_port = 2020
 
 class ChatBubble(MDTextField):
